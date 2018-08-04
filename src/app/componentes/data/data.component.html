@@ -1,0 +1,136 @@
+<h4>Formularios <small>data</small></h4>
+<hr>
+<form [formGroup]="forma" (ngSubmit)="guardarCambios()">
+
+  <div>
+
+    <div class="form-group row" >
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Nombre"
+               formControlName="nombre"
+               [ngClass]="{'is-invalid':forma.controls['nombre'].invalid}">
+        <div *ngIf="forma.controls['nombre'].errors?.required" class="invalid-feedback" >
+          El campo nombre esta vacio
+        </div>
+        <div *ngIf="forma.controls['nombre'].errors?.minlength" class="invalid-feedback">
+          debe tener minimo 3 caracteres
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Apellido"
+               formControlName="apellido"
+               [ngClass]="{'is-invalid':!forma.get('apellido').valid}">
+        <div *ngIf="forma.controls['apellido'].errors?.required" class="invalid-feedback">
+          El campo apellido esta vacio
+        </div>
+        <div *ngIf="forma.controls['apellido'].errors?.minlength" class="invalid-feedback">
+          debe tener minimo 3 caracteres
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group row " >
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-8">
+
+      <input class="form-control"
+             type="email"
+             placeholder="Correo electrónico"
+              formControlName="correo"
+               [ngClass]="{'is-invalid':!forma.get('correo').valid}">
+      <div *ngIf="forma.controls['correo'].errors?.required" class="invalid-feedback">
+        El campo correo esta vacio
+      </div>
+      <div *ngIf="forma.controls['correo'].errors?.pattern" class="invalid-feedback">
+        no es un correo valido
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-2 col-form-label">Sexo</label>
+      <div class="col-8">
+          <div class="  custom-control-inline" *ngFor="let s of genero">
+            <input formControlName="sexo" type="radio"
+            class="" [value]="s"
+            [ngClass]="{'is-invalid':!forma.get('sexo').valid}"
+            >
+            <label  >{{s}}</label>
+          </div>
+      </div>
+  </div>
+
+  <div class="form-group row " >
+    <label class="col-2 col-form-label">Pasatiempos</label>
+    <div class="col-8" formArrayName="pasatiempos">
+      <input class="form-control main-container" *ngFor="let pasatiempos of forma.controls['pasatiempos'].controls; let i=index"
+             type="text"
+             placeholder="Pasatiempos"
+              [formControlName]="i"
+                [ngClass]="{'is-invalid':!forma.get('pasatiempos').controls[i].valid}"
+              >
+    </div>
+    <div class="col-2">
+      <br>
+      <button  class="btn btn-sm btn-primary" (click)="agregarPasatiempo()">Agregar Pasa Tiempo </button>
+    </div>
+  </div>
+
+  <div class="form-group row " >
+    <label class="col-2 col-form-label">Contraseña</label>
+    <div class="col-8">
+
+      <input class="form-control"
+             type="text"
+             placeholder="Contraseña"
+              formControlName="contrasena1"
+               [ngClass]="{'is-invalid':!forma.get('contrasena1').valid}">
+      <div *ngIf="forma.controls['contrasena1'].errors?.required" class="invalid-feedback">
+        El campo contraseña esta vacio
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row " >
+    <label class="col-2 col-form-label">Repetir contraseña</label>
+    <div class="col-8">
+
+      <input class="form-control"
+             type="text"
+             placeholder="Repetir contraseña"
+              formControlName="contrasena2"
+               [ngClass]="{'is-invalid':!forma.get('contrasena2').valid}">
+      <div *ngIf="forma.controls['contrasena2'].errors?.required" class="invalid-feedback">
+        El campo contraseña esta vacio
+      </div>
+      <div *ngIf="forma.controls['contrasena2'].errors?.validarcontrasenas" class="invalid-feedback">
+        Las contraseñas no son iguales
+      </div>
+
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <button type="submit" class="btn btn-outline-primary">
+        Guardar
+      </button>
+    </div>
+  </div>
+  Formulario valido:{{forma.valid}}
+  <!-- <hr>
+   {{forma.controls['nombre'].invalid}} -->
+</form>

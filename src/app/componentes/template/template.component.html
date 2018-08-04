@@ -1,0 +1,100 @@
+<h4>Formularios <small>template</small></h4>
+<hr>
+<h6>variable parametro get:{{variableGet}}</h6>
+<br>Metodo con formularios<br>
+<input type="text" class="form-control-sm" placeholder="Busque artista ..." [(ngModel)]="termino" >
+
+{{termino}}
+<form (ngSubmit)="validar(forma)" #forma="ngForm" novalidate="" >
+
+  <div>
+
+   <br>
+    <div class="form-group row  ">
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col-8">
+
+        <input class="form-control" [ngClass]="{'is-invalid': (nombreModel.errors?.required || nombreModel.errors?.minlength) && nombreModel.touched}"
+               type="text"
+               placeholder="Nombre"
+               name="nombre" [(ngModel)]="usuario.nombre" required minlength=3 #nombreModel="ngModel">
+               <div *ngIf="nombreModel.errors?.required && nombreModel.touched" class="invalid-feedback">El campo es requerido</div>
+               <div *ngIf="nombreModel.errors?.minlength" class="invalid-feedback">El campo necesita mínimo de 3 caracteres </div>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col-8">
+
+        <input class="form-control" [ngClass]="{'is-invalid': (apellidoModel.errors?.required || apellidoModel.errors?.minlength) && apellidoModel.touched}"
+               type="text"
+               placeholder="Apellido"
+               name="apellido" [(ngModel)]="usuario.apellido"
+              required minlength=3 #apellidoModel="ngModel">
+
+              <div *ngIf="apellidoModel.errors?.required && apellidoModel.touched" class="invalid-feedback">El campo es requerido</div>
+              <div *ngIf="apellidoModel.errors?.minlength" class="invalid-feedback">El campo necesita mínimo de 3 caracteres </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-8">
+
+      <input class="form-control"
+             [ngClass]="{'is-invalid': (correoModel.errors?.required || correoModel.errors?.pattern) && correoModel.touched}"
+             type="email"
+             name="correo" [(ngModel)]="usuario.correo" required
+             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+             placeholder="Correo electrónico"  #correoModel="ngModel">
+             <div *ngIf="correoModel.errors?.required && correoModel.touched" class="invalid-feedback">El campo es requerido</div>
+             <div *ngIf="correoModel.errors?.pattern " class="invalid-feedback">El campo no cumple con el formato de un correo </div>
+
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-2 col-form-label">País</label>
+    <div class="col-8">
+       <select class="form-control" name="pais" [(ngModel)]="usuario.pais" required>
+          <option value="">Seleccione una opcion</option>
+          <option *ngFor="let p of paises" [value]="p.codigo">{{p.nombre}}</option>
+        </select>
+    </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-2 col-form-label">Sexo</label>
+      <div class="col-8">
+          <div class="  custom-control-inline" *ngFor="let s of genero">
+            <input [(ngModel)]="usuario.genero" type="radio"  name="genero"
+            class="" [value]="s" required >
+            <label  >{{s}}</label>
+          </div>
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-2 col-form-label">Sexo</label>
+      <div class="col-8">
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="" [(ngModel)]="usuario.acepta" name="acepta" required>
+            <label class="" for="customCheck1">Acepta Terminos y Condiciones</label>
+          </div>
+      </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <!-- [disabled]="forma.form.status=='INVALID'" -->
+      <button type="submit" class="btn btn-outline-primary" [disabled]="!forma.valid">
+        Guardar
+        <!-- {{forma.form.status}} -->
+      </button>
+    </div>
+  </div>
+
+</form>
+{{usuario | json}}
