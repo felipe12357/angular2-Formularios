@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup,FormControl,Validators,FormArray} from '@angular/forms';
-
+import {Observable}from 'rxjs/RX'
 
 @Component({
   selector: 'app-data',
@@ -20,6 +20,7 @@ export class DataComponent implements OnInit {
     correo:"atamayo@mail.com",
     pasatiempos:[""],
     sexo:"",
+    username:"",
     contrasena1:"",
     contrasena2:""
   };
@@ -32,10 +33,21 @@ export class DataComponent implements OnInit {
                                   Validators.pattern("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$")]),
       'pasatiempos':new FormArray([new FormControl('',Validators.required)]),
       'sexo':new FormControl('',[Validators.required]),
+      'username':new FormControl('',[Validators.required],this.existeUsuario),
       'contrasena1':new FormControl('',[Validators.required]),
       'contrasena2':new FormControl()
     });
 
+    //De esta forma cada vez que cambio algun valor en el Formulario
+    //se ejecuta algun codigo
+    this.forma.valueChanges.subscribe(data=>{
+      console.log(data);
+    })
+    //y asi cuando solo cambie el campo nombre
+    this.forma.controls['nombre'].valueChanges
+    .subscribe(data=>{
+        console.log(data);
+    });
     //Esta validacion toca implmentarla de esta forma para poder enviar el contexto(this) por medio de bind
     this.forma.controls['contrasena2'].setValidators([
       Validators.required,
@@ -48,8 +60,25 @@ export class DataComponent implements OnInit {
   ngOnInit() {
   }
 
+  existeUsuario(control:FormControl):Promise<any>|Observable<any>{
+    let promesa=new Promise(
+      (resolve,reject)=>{
+        setTimeout( ()=>{
+          if(control.value==="felipe12357"){
+            resolve({existe:true})
+          }else
+            resolve(null)
+        },3000);
+      }
+    )
+    return promesa;
+  }
+
   validarContrasenas(control:FormControl):any{
-    if(control.value!==this.controls['contrasena1'].value){
+    let formaLocal:any=this;
+    // console.log("en la validacion");
+    // console.log(this);
+    if(control.value!==formaLocal.controls['contrasena1'].value){
       return{
         validarcontrasenas:true
       }
